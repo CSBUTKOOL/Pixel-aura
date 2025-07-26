@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anime Drops - Pixel Aura</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #121212;
+      color: #fff;
+    }
+    header {
+      background: #1f1f1f;
+      padding: 1em;
+      text-align: center;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+    .item {
+      border-bottom: 1px solid #333;
+      padding: 1em;
+    }
+    .item-title {
+      font-size: 1.2em;
+      margin-bottom: 0.3em;
+    }
+    .item-link a {
+      color: #00bfff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <header>Anime Drops</header>
+  <div id="content">Loading...</div>
+
+  <script>
+    const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQKMQZsKjBGyy0U61r9CtKOJErKMBNgYJGpDz78PzXRYix6rwrTx59EQ0aE7lF7Im3QsTGxmxklMkpF/pub?gid=0&single=true&output=tsv";
+
+    fetch(sheetURL)
+      .then(res => res.text())
+      .then(text => {
+        const rows = text.trim().split("\n");
+        const headers = rows.shift().split("\t");
+        const content = document.getElementById("content");
+        content.innerHTML = "";
+
+        rows.forEach(row => {
+          const data = row.split("\t");
+          const title = data[0];
+          const description = data[1];
+          const link = data[2];
+
+          const item = document.createElement("div");
+          item.className = "item";
+          item.innerHTML = `
+            <div class="item-title">${title}</div>
+            <div class="item-description">${description}</div>
+            <div class="item-link"><a href="${link}" target="_blank">View Item</a></div>
+          `;
+          content.appendChild(item);
+        });
+      });
+  </script>
+</body>
+</html>
